@@ -1,0 +1,1049 @@
+{
+  "name": "Agente_Clínica_de_Estética",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "configure seu webhook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1472,
+        -800
+      ],
+      "id": "de24f5c2-5bd1-44c2-8d97-7577865889f2",
+      "name": "Webhook",
+      
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "554066e5-183d-40df-992e-abb0c499a2d2",
+              "name": "instance",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "276d8ae5-0d92-4414-84f0-a0544edef623",
+              "name": "remoteJid",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "637739e4-06b8-4927-8b19-0257738fbc60",
+              "name": "id",
+              "value": "={{ $json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f288c16a-c3a0-46c4-ad00-8f6f0953cd7f",
+              "name": "fromMe",
+              "value": "={{ $json.body.data.key.fromMe }}",
+              "type": "boolean"
+            },
+            {
+              "id": "164b8831-2cc7-4b12-b825-4a089767163e",
+              "name": "conversation",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "9476a859-63c9-4979-a129-8c8d01652d7a",
+              "name": "messageType",
+              "value": "={{ $json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "2c5f730f-1b5d-465a-923a-83c196f26661",
+              "name": "pushName",
+              "value": "={{ $json.body.data.pushName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1344,
+        -800
+      ],
+      "id": "037e1d61-f0c0-4653-8f92-4b056cea6ce5",
+      "name": "Dados"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem para responder: {{ $json.message }}\nDados para atendimento: \nNúmero do cliente: \nData e Hora atual {{ $now }}",
+        "options": {
+          "systemMessage": "Você é uma agente de agendamento de uma clínica de estética.\nVocê está atendendo os clientes pelo WhatsApp e sua missão é agendar procedimentos estéticos.\n\nHORÁRIO DE FUNCIONAMENTO\nA clínica funciona das 9:00 às 18:00.\n\nPROCEDIMENTOS OFERECIDOS E DURAÇÃO\nDiferente de um salão de cabelo, cada procedimento tem uma duração diferente. Ao agendar, você DEVE identificar corretamente qual procedimento o cliente deseja e usar a duração correta correspondente antes de verificar disponibilidade.\n\nIMPORTANTE: ajuste esta lista para os procedimentos reais oferecidos pela sua clínica.\n\n- Limpeza de pele: 60 minutos\n- Botox: 30 minutos\n- Preenchimento facial: 45 minutos\n- Drenagem linfática: 45 minutos\n- Peeling: 45 minutos\n- Microagulhamento: 60 minutos\n- Massagem modeladora: 50 minutos\n- Depilação a laser: 30 minutos\n\nSe o cliente mencionar um procedimento que não está na lista, pergunte educadamente qual procedimento ele deseja dentre os oferecidos pela clínica, ou informe que irá verificar com a equipe.\n\nFERRAMENTAS (TOOLS)\nMCP Agendamento:\n1. Verificar disponibilidade: utilize para verificar se um horário está disponível, considerando a duração do procedimento escolhido (não apenas um bloco fixo de 30 minutos). Um procedimento de 60 minutos ocupa dois blocos consecutivos de 30 minutos, por exemplo.\n2. Agendar: utilize para realizar o agendamento dentro da agenda, informando o procedimento, horário de início e duração correspondente.\n\nFLUXO DE ATENDIMENTO\n1. Cumprimente o cliente e pergunte qual procedimento ele deseja agendar.\n2. Identifique a duração correta do procedimento com base na lista acima.\n3. Pergunte a data e horário de preferência do cliente.\n4. Utilize a ferramenta Verificar disponibilidade considerando a duração total necessária para o procedimento.\n5. Caso o horário esteja disponível, confirme os dados com o cliente (procedimento, data, horário e duração) antes de agendar.\n6. Utilize a ferramenta Agendar para confirmar o agendamento.\n7. Caso o horário não esteja disponível, ofereça horários alternativos próximos, sempre respeitando o horário de funcionamento (9h às 18h) e a duração do procedimento.\n\nREGRAS IMPORTANTES\n- Nunca agende um procedimento fora do horário de funcionamento (9h às 18h), considerando também o horário de término com base na duração.\n- Sempre confirme os dados do agendamento (procedimento, data, horário) antes de finalizar.\n- Seja cordial, objetiva e profissional na comunicação por WhatsApp.\n- Caso o cliente tenha dúvidas sobre qual procedimento é mais indicado, oriente que a avaliação detalhada será feita presencialmente pela equipe especializada, mas você pode agendar uma consulta/avaliação inicial se este for um serviço oferecido."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        784,
+        -928
+      ],
+      "id": "d5bb672e-27c0-4f3f-aeb3-4facdaf68008",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        784,
+        -480
+      ],
+      "id": "51640cba-670e-4a47-9c35-42169d9ce4e8",
+      "name": "Google Gemini Chat Model",
+    
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json.instance }}  {{ $json.remoteJid }} remoteJid",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.4,
+      "position": [
+        880,
+        -672
+      ],
+      "id": "93976ea2-e07d-408c-becc-9728af7b59ef",
+      "name": "Postgres Chat Memory",
+     
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "5fd54bd0-0e70-4b49-b167-b36afd48be12"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4b447347-cff6-44ed-b72b-103f95dd34fe",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -1216,
+        -800
+      ],
+      "id": "bd890e15-e0e8-4617-83e0-3b72f39d1807",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "83fbd419-8a5a-44ae-8384-1c5985d371d4",
+              "name": "message",
+              "value": "={{ $('Dados').item.json.conversation }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1088,
+        -912
+      ],
+      "id": "1e562e4b-8009-4b06-8119-fc79ba9f1e50",
+      "name": "Set Text Message"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5368317c-7ac3-4e9e-9abd-76ae8e21f3c2",
+              "name": "message",
+              "value": "={{ $json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -512,
+        -896
+      ],
+      "id": "1b9b6781-bf80-4c1b-bf63-dc7db7bb463b",
+      "name": "Message"
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "={{ $('Dados').item.json.instance }}",
+        "messageId": "={{ $('Dados').item.json.id }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -1088,
+        -704
+      ],
+      "id": "3f258e38-4c8b-47ae-b622-e5232e0cda9a",
+      "name": "Obter m dia em base64",
+      
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "audio/mpeg"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -928,
+        -752
+      ],
+      "id": "94234eca-421d-429e-a754-bfc6bbe17825",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/audio/transcriptions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "groqApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "whisper-large-v3-turbo"
+            },
+            {
+              "name": "temperature",
+              "value": "0"
+            },
+            {
+              "name": "response_format",
+              "value": "verbose_json"
+            },
+            {
+              "name": "language",
+              "value": "pt"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -768,
+        -704
+      ],
+      "id": "10e7ddbe-dff3-4505-86e7-c5f2d48b2a4a",
+      "name": "HTTP Request",
+      
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "60dad123-1b6e-4359-b2f9-4d4608b938b6",
+              "name": "message",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -624,
+        -704
+      ],
+      "id": "8f8ca73c-02f8-42c2-9425-0b70aaea1345",
+      "name": "Set Audio Message"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "ai",
+              "message": "={{ $('Message').item.json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        -96,
+        -960
+      ],
+      "id": "e9e8404e-494e-4171-a76d-55b32edbeab7",
+      "name": "Chat Memory Manager"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4f583f08-3e71-4897-9685-a4635737948b",
+              "leftValue": "={{ $('Dados').item.json.fromMe }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -400,
+        -704
+      ],
+      "id": "551a8a8b-1bcf-4c02-bd23-1119e2526954",
+      "name": "From me"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Dados').item.json.instance }} {{ $('Dados').item.json.remoteJid }} block",
+        "value": "true",
+        "expire": true,
+        "ttl": 300
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        -880
+      ],
+      "id": "0862a2b3-a28f-4563-b1eb-1d06ce3dbad4",
+      "name": "Chave Block",
+    
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "isBlocked",
+        "key": "={{ $('Dados').item.json.instance }} {{ $('Dados').item.json.remoteJid }} block",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -688
+      ],
+      "id": "6e5b4b90-6867-438e-a7d5-0970a3c27bac",
+      "name": "Is Blocked",
+    
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "19373ce6-7c81-4943-a729-f7b61bd2696e",
+              "leftValue": "={{ $json.isBlocked }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -112,
+        -768
+      ],
+      "id": "0c5e3c9a-62d1-481b-976f-156d15047b44",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "user",
+              "message": "={{ $('Message').item.json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        -832
+      ],
+      "id": "c31c155b-655a-4e6c-8fd0-4862597252cc",
+      "name": "Chat Memory Manager1"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados').item.json.instance }} {{ $('Dados').item.json.remoteJid }} temp",
+        "messageData": "={{ $('Message').item.json.message }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -688
+      ],
+      "id": "fb29b0bd-ed49-4f1f-bdb1-58650c7d9a9f",
+      "name": "Redis",
+   
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        -688
+      ],
+      "id": "cc1a55d7-9706-46ee-8e1c-e91f498d82f5",
+      "name": "Wait",
+      
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messages",
+        "key": "={{ $('Dados').item.json.instance }} {{ $('Dados').item.json.remoteJid }} temp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        272,
+        -560
+      ],
+      "id": "84213095-0abf-4205-8571-527d3fabfc96",
+      "name": "Redis1",
+     
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "193ee6a6-e04b-4aae-a7e7-725d4a84b370",
+              "leftValue": "={{ $json.messages.last() }}",
+              "rightValue": "={{ $('Message').item.json.message }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        384,
+        -656
+      ],
+      "id": "cf880d92-8227-41a9-b2db-e78a362508c3",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Dados').item.json.instance }} {{ $('Dados').item.json.remoteJid }} temp"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -544
+      ],
+      "id": "1d322558-1ec0-439f-800d-b5941e1db70b",
+      "name": "Redis2",
+     
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "28fe012e-1d3f-4322-9a64-dbfc4ebb80fd",
+              "name": "message",
+              "value": "={{ $('Redis1').item.json.messages.join(\" \") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        656,
+        -656
+      ],
+      "id": "78adeea0-0377-485e-b4e7-e4ea418398f5",
+      "name": "Mensagem Final"
+    },
+    {
+      "parameters": {
+        "path": "cofigure"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -592
+      ],
+      "id": "df2b4e74-ad0f-4267-a082-bb03bb42022a",
+      "name": "MCP Agendamentos",
+      
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "c065ab785dec964b93da45652603622bca771256df4180d278f0e12af7f975cd@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "N8N"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start_Time', `Início do período para verificar se está disponível (Formato ISO)`, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End_Time', `Final do período para verificar se está disponível (Formato ISO)`, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        -464
+      ],
+      "id": "cb54d446-7fd4-418b-a631-6c16c8124c8d",
+      "name": "Verifica horários",
+      
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Chame essa ferramenta para criar um novo evento na agenda.",
+        "calendar": {
+          "__rl": true,
+          "value": "c065ab785dec964b93da45652603622bca771256df4180d278f0e12af7f975cd@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "N8N"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', `Horário de início (formato ISO)`, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', `Horário de início + 30 minutos`, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', `Descrição do agendamento.`, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', `O campo deve ser preenchido da seguinte forma: \n{Número do telefone do cliente} - {Nome do Cliente}`, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        944,
+        -464
+      ],
+      "id": "8ffafb36-dad2-4ed5-9197-6d30cf91cf1a",
+      "name": "Agendar",
+      
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://guilhermelaz-n8n.apz0f4.easypanel.host/mcp/1a58194f-2178-4555-a19c-e6d8a7668b5d",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.4,
+      "position": [
+        1008,
+        -752
+      ],
+      "id": "c86fbafc-bca0-4a1d-926f-14d3e205d258",
+      "name": "MCP Agendamentos1"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Dados').item.json.instance }}",
+        "remoteJid": "={{ $('Dados').item.json.remoteJid }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {
+          "delay": 3000,
+          "linkPreview": true
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        -912
+      ],
+      "id": "c7353766-ff67-4cc2-8dcb-888532adaa3b",
+      "name": "Mensagem Final2",
+      
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Chat Memory Manager",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Chat Memory Manager1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Final2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Set Text Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Obter m dia em base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Text Message": {
+      "main": [
+        [
+          {
+            "node": "Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message": {
+      "main": [
+        [
+          {
+            "node": "From me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter m dia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Set Audio Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Audio Message": {
+      "main": [
+        [
+          {
+            "node": "Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "From me": {
+      "main": [
+        [
+          {
+            "node": "Chave Block",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is Blocked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chave Block": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Blocked": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Redis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis2": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem Final": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica horários": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agendamentos",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agendamentos",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Agendamentos1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c1d77551-2158-47c3-876d-d8c53cc3e3ea",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0c56ca9cabc96cba4aeee1f1b897e71aa841bd08e99d1b6e17d8e7ac792787ee"
+  },
+  "nodeGroups": [],
+  "id": "VjwfzAzx3pic8PEj",
+  "tags": []
+}
