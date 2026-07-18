@@ -4,11 +4,11 @@
 
 Este projeto apresenta um agente de Inteligência Artificial desenvolvido no n8n para realizar o atendimento de clientes de uma clínica de estética pelo WhatsApp.
 
-O agente é capaz de responder dúvidas sobre os serviços oferecidos, listar os procedimentos disponíveis, informar preços e duração dos atendimentos, consultar horários disponíveis e realizar agendamentos diretamente no Google Calendar da clínica.
+O agente é capaz de responder dúvidas sobre os serviços oferecidos, listar os procedimentos disponíveis, informar preços, consultar horários disponíveis e realizar agendamentos diretamente no Google Agenda da clínica.
 
 O fluxo também permite o recebimento de mensagens de texto e áudio, utiliza memória conversacional e possibilita que um funcionário da clínica intervenha manualmente no atendimento quando necessário.
 
-O projeto está funcional e foi desenvolvido por meio da integração de diferentes ferramentas, APIs e serviços.
+O projeto foi desenvolvido por meio da integração de diferentes ferramentas, APIs e serviços.
 
 ---
 
@@ -241,71 +241,3 @@ AGENTEWHATSAPP_CLINICA_DE_ESTETICA
     └── agentewhatsapp_clinica_de_estetica.json
 ```
 
----
-
-## Como importar o workflow
-
-1. Faça o download do arquivo JSON disponível na pasta `workflow`;
-2. Acesse a sua instância do n8n;
-3. Crie um novo workflow;
-4. Selecione a opção para importar um arquivo;
-5. Escolha o arquivo JSON do projeto;
-6. Configure as credenciais necessárias;
-7. Configure a Evolution API;
-8. Configure as credenciais do Google;
-9. Configure o Google Calendar;
-10. Configure o Google Gemini;
-11. Configure a Groq API;
-12. Configure o Redis;
-13. Configure o Postgres;
-14. Revise os Webhooks;
-15. Realize os testes antes de ativar o fluxo.
-
----
-
-## Segurança
-
-Por motivos de segurança, o arquivo disponibilizado no GitHub não deve conter:
-
-- senhas;
-- tokens;
-- chaves de API;
-- credenciais do Google;
-- credenciais do banco de dados;
-- URLs privadas;
-- números de telefone;
-- dados de clientes;
-- identificadores privados da Evolution API;
-- Webhooks de produção.
-
-As credenciais devem ser configuradas diretamente no ambiente do n8n.
-
----
-
-## Possíveis melhorias futuras
-
-- Envio automático de lembretes;
-- Cancelamento de agendamentos;
-- Reagendamento pelo WhatsApp;
-- Integração com CRM;
-- Cadastro automático de clientes;
-- Confirmação de presença;
-- Pesquisa de satisfação;
-- Relatórios de atendimento;
-- Dashboard com métricas;
-- Transferência automática para atendimento humano.
-
----
-
-## Autor
-
-**Pablo Custódio Ferreira**
-
-Projeto desenvolvido para demonstração de conhecimentos em:
-
-- Automação de processos;
-- Inteligência Artificial;
-- Agentes de IA;
-- IA conversacional;
-- Integração de sistemas;
-- n8n.
