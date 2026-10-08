@@ -4,18 +4,18 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "configure seu webhook",
+        "path": "evolution Pablo_agentewhats",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -1472,
-        -800
+        -5760,
+        -576
       ],
       "id": "de24f5c2-5bd1-44c2-8d97-7577865889f2",
       "name": "Webhook",
-      
+      "webhookId": "71be728a-7eec-4f72-a92b-bb26b3875eb4"
     },
     {
       "parameters": {
@@ -24,43 +24,49 @@
             {
               "id": "554066e5-183d-40df-992e-abb0c499a2d2",
               "name": "instance",
-              "value": "={{ $json.body.instance }}",
+              "value": "={{ $json.body.instanceName }}",
               "type": "string"
             },
             {
               "id": "276d8ae5-0d92-4414-84f0-a0544edef623",
               "name": "remoteJid",
-              "value": "={{ $json.body.data.key.remoteJid }}",
+              "value": "={{ $json.body.message.chatid }}",
               "type": "string"
             },
             {
               "id": "637739e4-06b8-4927-8b19-0257738fbc60",
               "name": "id",
-              "value": "={{ $json.body.data.key.id }}",
+              "value": "={{ $json.body.message.messageid }}",
               "type": "string"
             },
             {
               "id": "f288c16a-c3a0-46c4-ad00-8f6f0953cd7f",
               "name": "fromMe",
-              "value": "={{ $json.body.data.key.fromMe }}",
+              "value": "={{ $json.body.message.fromMe }}",
               "type": "boolean"
             },
             {
               "id": "164b8831-2cc7-4b12-b825-4a089767163e",
               "name": "conversation",
-              "value": "={{ $json.body.data.message.conversation }}",
+              "value": "={{ $json.body.message.text }}",
               "type": "string"
             },
             {
               "id": "9476a859-63c9-4979-a129-8c8d01652d7a",
               "name": "messageType",
-              "value": "={{ $json.body.data.messageType }}",
+              "value": "={{ $json.body.message.type }}",
               "type": "string"
             },
             {
               "id": "2c5f730f-1b5d-465a-923a-83c196f26661",
               "name": "pushName",
-              "value": "={{ $json.body.data.pushName }}",
+              "value": "={{ $json.body.message.senderName }}",
+              "type": "string"
+            },
+            {
+              "id": "0293c7eb-0a88-47ad-adf5-fc4f9cb41c05",
+              "name": "mediaType",
+              "value": "={{ $json.body.message.mediaType }}",
               "type": "string"
             }
           ]
@@ -70,8 +76,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1344,
-        -800
+        -5472,
+        -848
       ],
       "id": "037e1d61-f0c0-4653-8f92-4b056cea6ce5",
       "name": "Dados"
@@ -81,14 +87,14 @@
         "promptType": "define",
         "text": "=Mensagem para responder: {{ $json.message }}\nDados para atendimento: \nNúmero do cliente: \nData e Hora atual {{ $now }}",
         "options": {
-          "systemMessage": "Você é uma agente de agendamento de uma clínica de estética.\nVocê está atendendo os clientes pelo WhatsApp e sua missão é agendar procedimentos estéticos.\n\nHORÁRIO DE FUNCIONAMENTO\nA clínica funciona das 9:00 às 18:00.\n\nPROCEDIMENTOS OFERECIDOS E DURAÇÃO\nDiferente de um salão de cabelo, cada procedimento tem uma duração diferente. Ao agendar, você DEVE identificar corretamente qual procedimento o cliente deseja e usar a duração correta correspondente antes de verificar disponibilidade.\n\nIMPORTANTE: ajuste esta lista para os procedimentos reais oferecidos pela sua clínica.\n\n- Limpeza de pele: 60 minutos\n- Botox: 30 minutos\n- Preenchimento facial: 45 minutos\n- Drenagem linfática: 45 minutos\n- Peeling: 45 minutos\n- Microagulhamento: 60 minutos\n- Massagem modeladora: 50 minutos\n- Depilação a laser: 30 minutos\n\nSe o cliente mencionar um procedimento que não está na lista, pergunte educadamente qual procedimento ele deseja dentre os oferecidos pela clínica, ou informe que irá verificar com a equipe.\n\nFERRAMENTAS (TOOLS)\nMCP Agendamento:\n1. Verificar disponibilidade: utilize para verificar se um horário está disponível, considerando a duração do procedimento escolhido (não apenas um bloco fixo de 30 minutos). Um procedimento de 60 minutos ocupa dois blocos consecutivos de 30 minutos, por exemplo.\n2. Agendar: utilize para realizar o agendamento dentro da agenda, informando o procedimento, horário de início e duração correspondente.\n\nFLUXO DE ATENDIMENTO\n1. Cumprimente o cliente e pergunte qual procedimento ele deseja agendar.\n2. Identifique a duração correta do procedimento com base na lista acima.\n3. Pergunte a data e horário de preferência do cliente.\n4. Utilize a ferramenta Verificar disponibilidade considerando a duração total necessária para o procedimento.\n5. Caso o horário esteja disponível, confirme os dados com o cliente (procedimento, data, horário e duração) antes de agendar.\n6. Utilize a ferramenta Agendar para confirmar o agendamento.\n7. Caso o horário não esteja disponível, ofereça horários alternativos próximos, sempre respeitando o horário de funcionamento (9h às 18h) e a duração do procedimento.\n\nREGRAS IMPORTANTES\n- Nunca agende um procedimento fora do horário de funcionamento (9h às 18h), considerando também o horário de término com base na duração.\n- Sempre confirme os dados do agendamento (procedimento, data, horário) antes de finalizar.\n- Seja cordial, objetiva e profissional na comunicação por WhatsApp.\n- Caso o cliente tenha dúvidas sobre qual procedimento é mais indicado, oriente que a avaliação detalhada será feita presencialmente pela equipe especializada, mas você pode agendar uma consulta/avaliação inicial se este for um serviço oferecido."
+          "systemMessage": "=# IDENTIDADE\n\nVocê é o assistente virtual da Barbearia Teste, atendendo clientes exclusivamente pelo WhatsApp.\n\nVocê ajuda o cliente a: consultar serviços e valores, consultar disponibilidade, agendar, consultar, remarcar e cancelar agendamentos.\n\nAtendimento natural, educado, objetivo, como uma conversa humana.\n\n---\n\n# REGRA FUNDAMENTAL DE CONVERSAÇÃO\n\nSEMPRE leia o histórico completo antes de responder. A cada mensagem, identifique: o que o cliente quer, o que ele já informou, o que falta, e qual o próximo passo.\n\nNUNCA: peça de novo uma informação já fornecida, repita uma mensagem anterior, reinicie o atendimento ou repita a saudação inicial. A conversa sempre avança a partir de onde parou.\n\nFaça somente a PRÓXIMA pergunta necessária — nunca várias de uma vez, nunca sobre o que já foi respondido.\n\nSaudação (exemplo, só na primeira mensagem): \"Olá! Sou o assistente virtual da Barbearia Teste. Como posso ajudar você hoje? Gostaria de marcar um horário?\"\n\n---\n\n# HORÁRIO DE FUNCIONAMENTO\n\n{{ $('Formatar Config').item.json.horarioTexto }} Domingo: fechado.\n\nInforme só quando relevante — não repita em toda resposta. NUNCA agende fora desse horário.\n\n---\n\n# SERVIÇOS, VALORES E DURAÇÃO\n\n| Serviço | Valor | Duração |\n|---|---|---|\n{{ $('Formatar Config').item.json.servicosTexto }}\n\nCombinações: 2 serviços = 60 min. 3 serviços = 90 min.\n\nEsta tabela é a ÚNICA fonte de serviços oferecidos. Se o cliente perguntar sobre qualquer serviço que NÃO esteja nesta tabela, informe educadamente que esse serviço não é oferecido no momento — NUNCA confirme disponibilidade nem invente valor para um serviço fora da lista.\n\nUse a duração INTERNAMENTE (disponibilidade, horário final, evento na agenda). NÃO informe a duração ao cliente a menos que ele pergunte.\n\n---\n\n# REGRA DE INTERVALO (a base de tudo)\n\nTodo agendamento é um INTERVALO: horário final = horário inicial + duração. Um horário só está disponível se TODO o intervalo (início até fim) estiver livre — não basta o horário inicial estar vago.\n\nDois agendamentos NÃO conflitam se um termina exatamente quando o outro começa (encostados são permitidos).\n\nExemplo: Barba agendada 14:00→14:30 (ocupado). Um corte às 14:15 ocuparia 14:15→14:45 → CONFLITO, indisponível. Um corte às 14:30 ocuparia 14:30→15:00 → sem conflito com a barba, mas verifique se não há outro agendamento nesse novo intervalo antes de confirmar.\n\nAo ler agendamentos existentes na agenda: se a ferramenta não trouxer horário final, calcule-o pela duração do serviço identificado no evento. Nunca presuma disponibilidade sem essa checagem completa.\n\n---\n\n# FERRAMENTAS\n\n1. Verificar Disponibilidade — sempre ANTES de qualquer novo agendamento, considerando o intervalo completo (início→fim).\n2. Buscar Horários — para encontrar horários livres próximos ao solicitado. Para cada horário retornado, calcule o intervalo completo (considerando a duração do serviço pedido) antes de oferecê-lo — não ofereça só porque o horário inicial aparece livre.\n3. Agendar — só depois da confirmação do cliente.\n4. Buscar Agendamento — para consultar, remarcar ou cancelar.\n5. Excluir Agendamento — também usada para remarcar (ver seção REMARCAÇÃO).\n\nNUNCA presuma disponibilidade, invente horários ou agendamentos sem consultar as ferramentas.\n\n---\n\n# QUANDO O CLIENTE PEDIU UM HORÁRIO ESPECÍFICO E ELE NÃO ESTÁ DISPONÍVEL\n\nIsso só se aplica quando o cliente já disse um horário exato (ex: \"às 13h\") e esse horário está ocupado. Não pergunte ao cliente qual outro horário ele quer. Você mesmo:\n1. Informa que o horário pedido não está disponível.\n2. Consulta \"Buscar Horários\" e calcula o intervalo completo necessário para o serviço.\n3. Encontra o horário válido mais próximo do pedido (que comporte a duração inteira, sem conflito).\n4. Já oferece esse horário específico ao cliente.\n\nExemplo: \"Entendi, Pablo. Infelizmente, o horário das 13h não está disponível. Temos disponibilidade às 13h30. Gostaria de agendar seu corte para esse horário?\"\n\nPara combinações de serviço, o horário alternativo precisa comportar a duração total (60 ou 90 min) livre, não só o início.\n\n---\n\n# QUANDO O CLIENTE AINDA NÃO PEDIU UM HORÁRIO ESPECÍFICO (ou perguntou só se há disponibilidade)\n\nNesse caso NÃO existe um horário \"pedido\" que ficou indisponível — não invente nem assuma um horário específico (como o horário de abertura) para depois pedir confirmação dele.\n\nSe, ao consultar a agenda, um período inteiro (ex: o dia todo, ou a partir de um certo horário) estiver livre, informe a JANELA disponível e pergunte qual horário dentro dela o cliente prefere — nunca afirme \"temos disponibilidade a partir das 9h, gostaria de agendar para esse horário?\", pois \"esse horário\" fica ambíguo e presume um horário que o cliente não escolheu.\n\nExemplo correto: \"Para hoje, temos disponibilidade a partir das 9h. Qual horário você prefere?\"\n\nExemplo incorreto (NÃO faça): \"Temos disponibilidade a partir das 09:00. Gostaria de agendar para esse horário?\"\n\nSó ofereça um horário específico para confirmação quando ele for realmente a alternativa a um horário que o cliente pediu (ver seção anterior) — nunca quando o cliente ainda não informou nenhum horário.\n\n---\n\n# ÚLTIMO HORÁRIO POSSÍVEL DO DIA\n\nA barbearia fecha às 19:00, e todo agendamento precisa terminar até esse horário — nunca ultrapassá-lo.\n\nPortanto, o último horário de INÍCIO possível depende da duração do serviço:\n\n* 1 serviço (30 min): último início às 18:30.\n* 2 serviços (60 min): último início às 18:00.\n* 3 serviços (90 min): último início às 17:30.\n\nSempre que informar ao cliente a janela de horários livres no fim do dia (com disponibilidade \"a partir de\" algum horário até o fechamento), informe também esse limite final, considerando a duração do serviço já identificado (se ainda não souber o serviço, use 30 minutos/18:30 como referência e ajuste depois que o serviço for confirmado).\n\nExemplo: \"Para hoje, temos disponibilidade a partir das 9h até as 18h30 para corte. Qual horário você prefere?\"\n\nNunca ofereça ou confirme um horário de início que faça o atendimento terminar depois das 19:00.\n\n---\n\n# FLUXO DE AGENDAMENTO\n\nOrdem lógica (pergunte só o que faltar, na ordem que fizer sentido pela conversa): serviço → nome completo → data → horário → telefone.\n\n1. Identifique o serviço (se não informado, pergunte).\n2. Peça nome completo (nome + sobrenome) se ainda não tiver — se o cliente der só o primeiro nome, peça o sobrenome.\n3. Identifique data e horário desejados.\n4. Telefone: use o número do WhatsApp da conversa quando disponível, no formato (XX)99999-9999. Se faltar o DDD, peça só o DDD (nunca invente). Não peça de novo se já tiver o número completo.\n5. Calcule duração e horário final.\n6. Verifique disponibilidade do intervalo completo. Se ocupado, ofereça alternativa (ver seção acima) sem que o cliente precise pedir.\n7. Com tudo disponível e completo (nome, telefone, serviço, data, horário, duração, horário final), apresente um resumo com emojis e peça confirmação:\n\n\"Perfeito! Ficou assim:\n📅 [data completa]\n⏰ [horário]\n✂️/🧔 [serviço]\n👤 [nome completo]\n\nPosso confirmar o agendamento?\"\n\n8. Só após o cliente confirmar, monte o título do evento e use \"Agendar\".\n9. Só depois que a ferramenta confirmar sucesso, informe o cliente — nunca antes.\n\n---\n\n# TÍTULO DO EVENTO NA AGENDA (formato obrigatório, sempre)\n\n`HORÁRIO - NOME COMPLETO - SERVIÇO - TELEFONE`\n\nExemplo: `13:45 - Pablo Custódio - Corte à máquina - (41)99999-9999`\n\nPara 2+ serviços, junte com \" + \": `16:00 - Pablo Custódio - Corte à máquina + Barba - (41)99999-9999`\n\nNUNCA use só telefone, só ID, só nome, ou omita algum dos 4 elementos. Telefone sempre em (XX)99999-9999, nunca sem formatação ou sem DDD.\n\nInício = horário confirmado. Fim = início + duração do serviço. Duração do evento = duração do serviço.\n\n---\n\n# CONFIRMAÇÃO FINAL AO CLIENTE (após sucesso da ferramenta \"Agendar\")\n\n\"Agendamento realizado com sucesso!\n\n📅 [data completa]\n⏰ [horário]\n✂️/🧔 [serviço]\n👤 [nome completo]\n\nNa impossibilidade de comparecer no horário marcado, por favor nos avise com pelo menos 2h de antecedência. Tenha um[a] [ótimo dia / ótima tarde / ótima noite]!\"\n\nA saudação final (dia/tarde/noite) é baseada no horário ATUAL da mensagem (campo \"Data e Hora atual\" recebido, e não no horário do agendamento). Use os limites exatos de hora, olhando somente a hora (HH) do horário atual:\n\n* 00:00 a 11:59 → \"Tenha um ótimo dia!\"\n* 12:00 a 17:59 → \"Tenha uma ótima tarde!\"\n* 18:00 a 23:59 → \"Tenha uma ótima noite!\"\n\nAntes de escrever a saudação final, releia o valor exato da hora atual e confira em qual dessas três faixas ele se encaixa — não deduza pelo contexto da conversa nem pelo horário do agendamento.\n\nEssa mensagem de confirmação (com emojis e o aviso de antecedência) é obrigatória em TODO agendamento novo bem-sucedido, e também nas remarcações.\n\n---\n\n# REMARCAÇÃO\n\nNão existe uma ferramenta única de \"remarcar\". Para remarcar, combine duas ferramentas já existentes: primeiro exclua o agendamento antigo, depois crie o novo. NUNCA crie o novo agendamento antes de excluir o antigo, e NUNCA informe sucesso da remarcação sem que as duas etapas tenham sido concluídas.\n\n1. Buscar Agendamento para localizar o existente (guarde o ID do evento).\n2. Identifique o que vai mudar: nova data, novo horário e/ou novo serviço.\n3. Calcule a nova duração e o novo horário final; verifique disponibilidade do novo intervalo completo (mesma regra de conflito das outras seções). Se ocupado, ofereça alternativa automaticamente, sem que o cliente precise pedir.\n4. Apresente o resumo do novo horário (com emojis) e peça confirmação ao cliente antes de mexer em qualquer agendamento.\n5. Só após a confirmação: primeiro use \"Excluir Agendamento\" no evento antigo (usando o ID localizado no passo 1) e aguarde sucesso; depois use \"Agendar\" para criar o novo evento, com o título no formato obrigatório (HORÁRIO - NOME COMPLETO - SERVIÇO - TELEFONE).\n6. Só depois que a criação do novo evento confirmar sucesso, envie ao cliente a mesma mensagem de confirmação final (com emojis + aviso de 2h de antecedência) usada em um agendamento novo.\n\n---\n\n# CANCELAMENTO\n\n1. Buscar Agendamento. Se houver mais de um, confirme com o cliente qual cancelar.\n2. Excluir Agendamento, aguarde confirmação.\n3. Informe o cancelamento realizado. NÃO use emojis nessa mensagem.\n\n---\n\n# CONSULTA DE AGENDAMENTOS\n\nBuscar Agendamento e apresentar exatamente o que a ferramenta retornar, sem inventar nada. NÃO use emojis nessa mensagem.\n\n---\n\n# DATAS\n\nInterprete corretamente termos relativos (hoje, amanhã, sábado, próximo sábado, semana que vem) com base na data atual. Ao confirmar, sempre informe a data completa por extenso, para evitar ambiguidade.\n\n---\n\n# EMOJIS — quando usar e quando não usar\n\nUSE emojis apenas em: (a) resposta sobre serviços/valores disponíveis, e (b) mensagens de confirmação de agendamento/remarcação (novo ou concluído).\n\nLegenda: 📅 data · ⏰ horário · ✂️ corte (à máquina ou tesoura) · 🧔 barba · 👤 nome do cliente.\n\nNÃO use emojis em: pedir nome/sobrenome/telefone/DDD, perguntar data/horário, verificar disponibilidade, informar indisponibilidade, oferecer horário alternativo, consultar ou cancelar agendamentos, explicar regras, ou qualquer resposta fora desses dois contextos.\n\nExemplo de resposta sobre serviços: \"Claro! Temos os seguintes serviços:\n✂️ Corte à máquina — R$ 37,00\n✂️ Corte com tesoura — R$ 45,00\n🧔 Barba — R$ 40,00\"\n\n---\n\n# REGRAS DE SEGURANÇA (nunca faça)\n\nNunca: invente serviços que não estejam na tabela de SERVIÇOS (nem seus valores); invente horários/agendamentos/disponibilidade; confirme ou agende sem checar o intervalo completo na agenda; permita sobreposição de horários; ignore a duração do serviço; altere dado confirmado pelo cliente sem avisar; peça de novo informação já dada; invente DDD; registre telefone sem formatação ou sem DDD; crie evento sem horário final/duração corretos; use título de evento fora do formato obrigatório; diga que o agendamento foi feito antes da ferramenta confirmar sucesso.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        784,
-        -928
+        -3328,
+        -720
       ],
       "id": "d5bb672e-27c0-4f3f-aeb3-4facdaf68008",
       "name": "AI Agent"
@@ -101,30 +107,36 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        784,
-        -480
+        -3328,
+        -272
       ],
       "id": "51640cba-670e-4a47-9c35-42169d9ce4e8",
       "name": "Google Gemini Chat Model",
-    
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6GDiGPXiySR4t1S7",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Dados').item.json.instance }}  {{ $json.remoteJid }} remoteJid",
+        "sessionKey": "={{ $('Dados').item.json.instance }}  {{ $('Dados').item.json.remoteJid }} remoteJid",
         "contextWindowLength": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.4,
       "position": [
-        880,
-        -672
+        -3232,
+        -464
       ],
       "id": "93976ea2-e07d-408c-becc-9728af7b59ef",
       "name": "Postgres Chat Memory",
-     
+      "credentials": {
+        "postgres": {
+          "id": "Iax89TkoTX6XYTNT",
+          "name": "Postgres account"
         }
       }
     },
@@ -143,7 +155,7 @@
                 "conditions": [
                   {
                     "leftValue": "={{ $json.messageType }}",
-                    "rightValue": "conversation",
+                    "rightValue": "text",
                     "operator": {
                       "type": "string",
                       "operation": "equals"
@@ -166,7 +178,16 @@
                   {
                     "id": "4b447347-cff6-44ed-b72b-103f95dd34fe",
                     "leftValue": "={{ $json.messageType }}",
-                    "rightValue": "audioMessage",
+                    "rightValue": "media",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  },
+                  {
+                    "id": "72a1cbcb-1d42-40f7-911c-dd2aa9354f36",
+                    "leftValue": "={{ $json.mediaType }}",
+                    "rightValue": "ptt",
                     "operator": {
                       "type": "string",
                       "operation": "equals"
@@ -183,8 +204,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -1216,
-        -800
+        -5328,
+        -592
       ],
       "id": "bd890e15-e0e8-4617-83e0-3b72f39d1807",
       "name": "Switch"
@@ -206,8 +227,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1088,
-        -912
+        -5200,
+        -704
       ],
       "id": "1e562e4b-8009-4b06-8119-fc79ba9f1e50",
       "name": "Set Text Message"
@@ -229,35 +250,42 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -512,
-        -896
+        -4624,
+        -688
       ],
       "id": "1b9b6781-bf80-4c1b-bf63-dc7db7bb463b",
       "name": "Message"
     },
     {
       "parameters": {
-        "resource": "chat-api",
-        "operation": "get-media-base64",
-        "instanceName": "={{ $('Dados').item.json.instance }}",
-        "messageId": "={{ $('Dados').item.json.id }}"
+        "method": "POST",
+        "url": "https://agenteclaudebasico.uazapi.com/message/download",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"id\": {{ JSON.stringify($('Dados').item.json.id) }},\n  \"return_base64\": true\n}",
+        "options": {}
       },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
       "position": [
-        -1088,
-        -704
+        -5200,
+        -496
       ],
       "id": "3f258e38-4c8b-47ae-b622-e5232e0cda9a",
       "name": "Obter m dia em base64",
-      
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GZvEWbFQ9oVhcSTD",
+          "name": "Uazapi Token (clinica_salao)"
         }
       }
     },
     {
       "parameters": {
         "operation": "toBinary",
-        "sourceProperty": "data.base64",
+        "sourceProperty": "base64Data",
         "options": {
           "mimeType": "audio/mpeg"
         }
@@ -265,8 +293,8 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        -928,
-        -752
+        -5040,
+        -544
       ],
       "id": "94234eca-421d-429e-a754-bfc6bbe17825",
       "name": "Convert to File"
@@ -309,12 +337,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -768,
-        -704
+        -4880,
+        -496
       ],
       "id": "10e7ddbe-dff3-4505-86e7-c5f2d48b2a4a",
       "name": "HTTP Request",
-      
+      "credentials": {
+        "groqApi": {
+          "id": "qmYvo0GTRfeEwRA7",
+          "name": "Groq account"
         }
       }
     },
@@ -335,8 +366,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -624,
-        -704
+        -4736,
+        -496
       ],
       "id": "8f8ca73c-02f8-42c2-9425-0b70aaea1345",
       "name": "Set Audio Message"
@@ -356,8 +387,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
       "position": [
-        -96,
-        -960
+        -4208,
+        -752
       ],
       "id": "e9e8404e-494e-4171-a76d-55b32edbeab7",
       "name": "Chat Memory Manager"
@@ -391,8 +422,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -400,
-        -704
+        -4512,
+        -496
       ],
       "id": "551a8a8b-1bcf-4c02-bd23-1119e2526954",
       "name": "From me"
@@ -408,12 +439,15 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -288,
-        -880
+        -4400,
+        -672
       ],
       "id": "0862a2b3-a28f-4563-b1eb-1d06ce3dbad4",
       "name": "Chave Block",
-    
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
         }
       }
     },
@@ -427,12 +461,15 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -224,
-        -688
+        -4336,
+        -480
       ],
       "id": "6e5b4b90-6867-438e-a7d5-0970a3c27bac",
       "name": "Is Blocked",
-    
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
         }
       }
     },
@@ -465,8 +502,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -112,
-        -768
+        -4224,
+        -560
       ],
       "id": "0c5e3c9a-62d1-481b-976f-156d15047b44",
       "name": "If"
@@ -486,8 +523,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
       "position": [
-        160,
-        -832
+        -3952,
+        -624
       ],
       "id": "c31c155b-655a-4e6c-8fd0-4862597252cc",
       "name": "Chat Memory Manager1"
@@ -502,28 +539,31 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        16,
-        -688
+        -4096,
+        -480
       ],
       "id": "fb29b0bd-ed49-4f1f-bdb1-58650c7d9a9f",
       "name": "Redis",
-   
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
         }
       }
     },
     {
       "parameters": {
-        "amount": 10
+        "amount": 2
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        160,
-        -688
+        -3952,
+        -480
       ],
       "id": "cc1a55d7-9706-46ee-8e1c-e91f498d82f5",
       "name": "Wait",
-      
+      "webhookId": "e9981d15-a5bd-432f-9430-1d5047a5d095"
     },
     {
       "parameters": {
@@ -535,12 +575,15 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        272,
-        -560
+        -3840,
+        -352
       ],
       "id": "84213095-0abf-4205-8571-527d3fabfc96",
       "name": "Redis1",
-     
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
         }
       }
     },
@@ -571,8 +614,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        384,
-        -656
+        -3728,
+        -448
       ],
       "id": "cf880d92-8227-41a9-b2db-e78a362508c3",
       "name": "If1"
@@ -585,12 +628,15 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        496,
-        -544
+        -3616,
+        -336
       ],
       "id": "1d322558-1ec0-439f-800d-b5941e1db70b",
       "name": "Redis2",
-     
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
         }
       }
     },
@@ -611,25 +657,25 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        656,
-        -656
+        -3456,
+        -448
       ],
       "id": "78adeea0-0377-485e-b4e7-e4ea418398f5",
       "name": "Mensagem Final"
     },
     {
       "parameters": {
-        "path": "cofigure"
+        "path": "1a58194f-2178-4555-a19c-e6d8a7668b5d"
       },
       "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
       "typeVersion": 2,
       "position": [
-        1040,
-        -592
+        -3072,
+        -384
       ],
       "id": "df2b4e74-ad0f-4267-a082-bb03bb42022a",
       "name": "MCP Agendamentos",
-      
+      "webhookId": "1a58194f-2178-4555-a19c-e6d8a7668b5d"
     },
     {
       "parameters": {
@@ -647,12 +693,55 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        1072,
-        -464
+        -3040,
+        -256
       ],
       "id": "cb54d446-7fd4-418b-a631-6c16c8124c8d",
       "name": "Verifica horários",
-      
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "LjlakA4MEm8Ikvxl",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://guilhermelaz-n8n.apz0f4.easypanel.host/mcp/1a58194f-2178-4555-a19c-e6d8a7668b5d",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.4,
+      "position": [
+        -3104,
+        -544
+      ],
+      "id": "c86fbafc-bca0-4a1d-926f-14d3e205d258",
+      "name": "MCP Agendamentos1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agenteclaudebasico.uazapi.com/send/text",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": {{ JSON.stringify($('Dados').item.json.remoteJid) }},\n  \"text\": {{ JSON.stringify($json.output) }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -3024,
+        -704
+      ],
+      "id": "c7353766-ff67-4cc2-8dcb-888532adaa3b",
+      "name": "Mensagem Final2",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GZvEWbFQ9oVhcSTD",
+          "name": "Uazapi Token (clinica_salao)"
         }
       }
     },
@@ -676,51 +765,462 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        944,
-        -464
+        -3168,
+        -256
       ],
       "id": "8ffafb36-dad2-4ed5-9197-6d30cf91cf1a",
       "name": "Agendar",
-      
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "LjlakA4MEm8Ikvxl",
+          "name": "Google Calendar account"
         }
       }
     },
     {
       "parameters": {
-        "endpointUrl": "https://guilhermelaz-n8n.apz0f4.easypanel.host/mcp/1a58194f-2178-4555-a19c-e6d8a7668b5d",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "c065ab785dec964b93da45652603622bca771256df4180d278f0e12af7f975cd@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "N8N"
+        },
+        "options": {
+          "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', `Número de telefone (ID) do cliente`, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -2944,
+        -192
+      ],
+      "id": "956c24be-374b-4f99-a692-c87014ea794d",
+      "name": "Buscar Agendamento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "LjlakA4MEm8Ikvxl",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Busca todos os eventos já marcados  para os próximos 7 dias \nUtilize essas ferramenta para determinar os horários livres \n\n(Não existe um agendamento naquele horário = está livre)",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "c065ab785dec964b93da45652603622bca771256df4180d278f0e12af7f975cd@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "N8N"
+        },
+        "returnAll": true,
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
-      "typeVersion": 1.4,
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
       "position": [
-        1008,
-        -752
+        -2784,
+        -336
       ],
-      "id": "c86fbafc-bca0-4a1d-926f-14d3e205d258",
-      "name": "MCP Agendamentos1"
+      "id": "f06161e3-a586-46ff-a464-3888f47ccf9e",
+      "name": "Horarios Disponi veis",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "LjlakA4MEm8Ikvxl",
+          "name": "Google Calendar account"
+        }
+      }
     },
     {
       "parameters": {
-        "resource": "messages-api",
-        "instanceName": "={{ $('Dados').item.json.instance }}",
-        "remoteJid": "={{ $('Dados').item.json.remoteJid }}",
-        "messageText": "={{ $json.output }}",
-        "options_message": {
-          "delay": 3000,
-          "linkPreview": true
-        }
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "c065ab785dec964b93da45652603622bca771256df4180d278f0e12af7f975cd@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "N8N"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', `Event ID obtido na ferramenta Buscar Agendamento`, 'string') }}",
+        "options": {}
       },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
       "position": [
-        1088,
-        -912
+        -2848,
+        -192
       ],
-      "id": "c7353766-ff67-4cc2-8dcb-888532adaa3b",
-      "name": "Mensagem Final2",
-      
+      "id": "cfe7fd68-92eb-4fa6-a965-4ef99d6149ca",
+      "name": "Excluir Marcacao",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "LjlakA4MEm8Ikvxl",
+          "name": "Google Calendar account"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "filter-away-msg-1",
+              "leftValue": "={{ $json.conversation }}",
+              "rightValue": "Agradecemos seu contato",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -5488,
+        -416
+      ],
+      "id": "filter-away-message-node",
+      "name": "Filtrar Auto-Resposta"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "admin-owner-check",
+              "leftValue": "={{ $('Dados').item.json.remoteJid }}",
+              "rightValue": "5500000000000@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -5240,
+        -750
+      ],
+      "id": "admin-eh-dono",
+      "name": "É Dono?"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "adminStateRaw",
+        "key": "=admin:{{ $('Dados').item.json.remoteJid }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -5100,
+        -800
+      ],
+      "id": "admin-buscar-estado",
+      "name": "Buscar Estado Admin",
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "admin-tem-estado",
+              "leftValue": "={{ $json.adminStateRaw }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "admin-eh-palavra-chave",
+              "leftValue": "={{ ($('Dados').item.json.conversation || '').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').trim() }}",
+              "rightValue": "aristoteles",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -4960,
+        -800
+      ],
+      "id": "admin-deve-entrar",
+      "name": "Deve Entrar Admin?"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "configRaw",
+        "key": "clinica_salao:config",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -4820,
+        -850
+      ],
+      "id": "admin-buscar-config",
+      "name": "Buscar Config Admin",
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "\nconst msgRaw = $('Dados').item.json.conversation || '';\nconst msg = msgRaw.trim();\nconst msgNorm = msg.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');\n\nlet state = null;\ntry { state = JSON.parse($('Buscar Estado Admin').item.json.adminStateRaw || 'null'); } catch (e) { state = null; }\n\nlet config = null;\ntry { config = JSON.parse($('Buscar Config Admin').item.json.configRaw || 'null'); } catch (e) { config = null; }\nif (!config || !config.servicos) {\n  config = { servicos: [], horario: { dias: \"Segunda a sábado\", abertura: \"09:00\", fechamento: \"19:00\" } };\n}\n\nfunction formatMenu() {\n  return \"Você entrou no modo de edição do agente.\\n\\nDigite 1 para alterar nome do serviço, valores ou horário de funcionamento\\nDigite 2 para incluir novo serviço\\nDigite 3 para excluir um serviço\\n\\n(Digite \\\"sair\\\" a qualquer momento pra encerrar)\";\n}\n\nfunction formatConfirmacao(resumo) {\n  return `Confira se está certo:\\n\\n${resumo}\\n\\nDigite 1 para confirmar\\nDigite 2 para corrigir\\nDigite 3 para voltar ao menu anterior`;\n}\n\nfunction parseValor(str) {\n  let s = (str || '').replace(/[^0-9,.]/g, '');\n  if (s.includes(',') && s.includes('.')) {\n    s = s.replace(/\\./g, '').replace(',', '.');\n  } else if (s.includes(',')) {\n    s = s.replace(',', '.');\n  }\n  return parseFloat(s);\n}\n\nfunction parseDuracao(str) {\n  const s = (str || '').toLowerCase().trim();\n  const numMatch = s.match(/(\\d+(?:[.,]\\d+)?)/);\n  if (!numMatch) return NaN;\n  const num = parseFloat(numMatch[1].replace(',', '.'));\n  if (/h(ora)?s?\\b/.test(s) && !/min/.test(s)) {\n    return Math.round(num * 60);\n  }\n  return Math.round(num);\n}\n\nlet reply = \"\";\nlet newState = null;\nlet newConfig = null;\nlet exit = false;\n\nif ([\"sair\", \"cancelar\", \"pronto\", \"encerrar\"].includes(msgNorm)) {\n  reply = \"Saiu do modo de edição.\";\n  exit = true;\n} else if (!state || !state.step) {\n  reply = formatMenu();\n  newState = { step: \"menu\" };\n} else if (state.step === \"menu\") {\n  if (msg === \"1\") {\n    reply = \"O que deseja alterar?\\nDigite \\\"servico\\\" para editar nome, valor ou duração de um serviço existente\\nDigite \\\"horario\\\" para alterar o horário de funcionamento\";\n    newState = { step: \"aguardando_escolha_1\" };\n  } else if (msg === \"2\") {\n    reply = \"Envie no formato:\\nNome - Valor - Duração\\nEx: massagem relaxante - R$10,00 - 45 minutos\";\n    newState = { step: \"aguardando_incluir\" };\n  } else if (msg === \"3\") {\n    const lista = config.servicos.map(s => \"- \" + s.nome).join('\\n');\n    reply = \"Envie o nome exato do serviço que deseja excluir:\\n\" + lista;\n    newState = { step: \"aguardando_excluir\" };\n  } else {\n    reply = \"Opção inválida.\\n\\n\" + formatMenu();\n    newState = { step: \"menu\" };\n  }\n} else if (state.step === \"aguardando_escolha_1\") {\n  if (msgNorm === \"servico\") {\n    const lista = config.servicos.map(s => `- ${s.nome} (R$${s.valor}, ${s.duracao}min)`).join('\\n');\n    reply = \"Envie no formato:\\nNome atual - Novo nome - Novo valor - Nova duração\\n(repita o nome se não quiser mudar)\\nEx: Botox - Botox - R$850,00 - 30 minutos\\n\\nServiços atuais:\\n\" + lista;\n    newState = { step: \"aguardando_editar_servico\" };\n  } else if (msgNorm === \"horario\") {\n    reply = `Envie no formato:\\nDias - Abertura - Fechamento\\nEx: Segunda a sábado - 09:00 - 18:00\\n\\nAtual: ${config.horario.dias} - ${config.horario.abertura} - ${config.horario.fechamento}`;\n    newState = { step: \"aguardando_horario\" };\n  } else {\n    reply = \"Não entendi. Digite \\\"servico\\\" ou \\\"horario\\\".\";\n    newState = state;\n  }\n\n// ---- ETAPA 1: coletar dados ----\n} else if (state.step === \"aguardando_editar_servico\") {\n  const parts = msg.split('-').map(p => p.trim());\n  if (parts.length !== 4) {\n    reply = \"Formato inválido. Envie no formato:\\nNome atual - Novo nome - Novo valor - Nova duração\\nEx: Botox - Botox - R$850,00 - 30 minutos\";\n    newState = state;\n  } else {\n    const [nomeAtual, novoNome, novoValorStr, novaDuracaoStr] = parts;\n    const idx = config.servicos.findIndex(s => s.nome.toLowerCase() === nomeAtual.toLowerCase());\n    if (idx === -1) {\n      reply = `Não encontrei o serviço \"${nomeAtual}\". Tente novamente ou digite \"sair\".`;\n      newState = state;\n    } else {\n      const novoValor = parseValor(novoValorStr);\n      const novaDuracao = parseDuracao(novaDuracaoStr);\n      if (isNaN(novoValor) || isNaN(novaDuracao)) {\n        reply = \"Não consegui entender o valor ou a duração. Envie no formato:\\nNome atual - Novo nome - Novo valor - Nova duração\\nEx: Botox - Botox - R$850,00 - 30 minutos\";\n        newState = state;\n      } else {\n        const pendente = { idx, nome: novoNome, valor: novoValor, duracao: novaDuracao };\n        const resumo = `Serviço: ${nomeAtual} → ${novoNome}\\nValor: R$${novoValor.toFixed(2).replace('.', ',')}\\nDuração: ${novaDuracao} minutos`;\n        reply = formatConfirmacao(resumo);\n        newState = { step: \"confirmando_editar_servico\", pendente };\n      }\n    }\n  }\n} else if (state.step === \"aguardando_horario\") {\n  const parts = msg.split('-').map(p => p.trim());\n  if (parts.length !== 3) {\n    reply = \"Formato inválido. Envie: Dias - Abertura - Fechamento\";\n    newState = state;\n  } else {\n    const [dias, abertura, fechamento] = parts;\n    const pendente = { dias, abertura, fechamento };\n    const resumo = `Dias: ${dias}\\nAbertura: ${abertura}\\nFechamento: ${fechamento}`;\n    reply = formatConfirmacao(resumo);\n    newState = { step: \"confirmando_horario\", pendente };\n  }\n} else if (state.step === \"aguardando_incluir\") {\n  const parts = msg.split('-').map(p => p.trim());\n  if (parts.length !== 3) {\n    reply = \"Formato inválido. Envie no formato:\\nNome - Valor - Duração\\nEx: massagem relaxante - R$10,00 - 45 minutos\";\n    newState = state;\n  } else {\n    const [nome, valorStr, duracaoStr] = parts;\n    const valor = parseValor(valorStr);\n    const duracao = parseDuracao(duracaoStr);\n    if (isNaN(valor) || isNaN(duracao)) {\n      reply = \"Não consegui entender o valor ou a duração. Envie no formato:\\nNome - Valor - Duração\\nEx: massagem relaxante - R$10,00 - 45 minutos\";\n      newState = state;\n    } else {\n      const pendente = { nome, valor, duracao };\n      const resumo = `Novo serviço: ${nome}\\nValor: R$${valor.toFixed(2).replace('.', ',')}\\nDuração: ${duracao} minutos`;\n      reply = formatConfirmacao(resumo);\n      newState = { step: \"confirmando_incluir\", pendente };\n    }\n  }\n} else if (state.step === \"aguardando_excluir\") {\n  const idx = config.servicos.findIndex(s => s.nome.toLowerCase() === msg.toLowerCase());\n  if (idx === -1) {\n    reply = `Não encontrei o serviço \"${msg}\". Tente novamente ou digite \"sair\".`;\n    newState = state;\n  } else {\n    const pendente = { idx, nome: config.servicos[idx].nome };\n    const resumo = `Excluir o serviço: ${config.servicos[idx].nome}`;\n    reply = formatConfirmacao(resumo);\n    newState = { step: \"confirmando_excluir\", pendente };\n  }\n\n// ---- ETAPA 2: confirmar e aplicar ----\n} else if (state.step === \"confirmando_editar_servico\") {\n  if (msg === \"1\") {\n    const p = state.pendente;\n    config.servicos[p.idx] = { nome: p.nome, valor: p.valor, duracao: p.duracao };\n    newConfig = config;\n    reply = `Atualizado! \"${p.nome}\" agora custa R$${p.valor} e dura ${p.duracao} minutos.\\n\\n` + formatMenu();\n    newState = { step: \"menu\" };\n  } else if (msg === \"2\") {\n    reply = \"Envie novamente no formato:\\nNome atual - Novo nome - Novo valor - Nova duração\\nEx: Botox - Botox - R$850,00 - 30 minutos\";\n    newState = { step: \"aguardando_editar_servico\" };\n  } else if (msg === \"3\") {\n    reply = formatMenu();\n    newState = { step: \"menu\" };\n  } else {\n    reply = \"Digite 1 para confirmar, 2 para corrigir, ou 3 para voltar ao menu.\";\n    newState = state;\n  }\n} else if (state.step === \"confirmando_horario\") {\n  if (msg === \"1\") {\n    config.horario = state.pendente;\n    newConfig = config;\n    reply = `Horário atualizado: ${config.horario.dias}, ${config.horario.abertura} às ${config.horario.fechamento}.\\n\\n` + formatMenu();\n    newState = { step: \"menu\" };\n  } else if (msg === \"2\") {\n    reply = \"Envie novamente no formato: Dias - Abertura - Fechamento\";\n    newState = { step: \"aguardando_horario\" };\n  } else if (msg === \"3\") {\n    reply = formatMenu();\n    newState = { step: \"menu\" };\n  } else {\n    reply = \"Digite 1 para confirmar, 2 para corrigir, ou 3 para voltar ao menu.\";\n    newState = state;\n  }\n} else if (state.step === \"confirmando_incluir\") {\n  if (msg === \"1\") {\n    const p = state.pendente;\n    config.servicos.push({ nome: p.nome, valor: p.valor, duracao: p.duracao });\n    newConfig = config;\n    reply = `Serviço \"${p.nome}\" incluído: R$${p.valor}, ${p.duracao} minutos.\\n\\n` + formatMenu();\n    newState = { step: \"menu\" };\n  } else if (msg === \"2\") {\n    reply = \"Envie novamente no formato:\\nNome - Valor - Duração\\nEx: massagem relaxante - R$10,00 - 45 minutos\";\n    newState = { step: \"aguardando_incluir\" };\n  } else if (msg === \"3\") {\n    reply = formatMenu();\n    newState = { step: \"menu\" };\n  } else {\n    reply = \"Digite 1 para confirmar, 2 para corrigir, ou 3 para voltar ao menu.\";\n    newState = state;\n  }\n} else if (state.step === \"confirmando_excluir\") {\n  if (msg === \"1\") {\n    const p = state.pendente;\n    const removido = config.servicos.splice(p.idx, 1)[0];\n    newConfig = config;\n    reply = `Serviço \"${removido.nome}\" removido.\\n\\n` + formatMenu();\n    newState = { step: \"menu\" };\n  } else if (msg === \"2\") {\n    const lista = config.servicos.map(s => \"- \" + s.nome).join('\\n');\n    reply = \"Envie novamente o nome exato do serviço que deseja excluir:\\n\" + lista;\n    newState = { step: \"aguardando_excluir\" };\n  } else if (msg === \"3\") {\n    reply = formatMenu();\n    newState = { step: \"menu\" };\n  } else {\n    reply = \"Digite 1 para confirmar, 2 para corrigir, ou 3 para voltar ao menu.\";\n    newState = state;\n  }\n} else {\n  reply = formatMenu();\n  newState = { step: \"menu\" };\n}\n\nreturn {\n  json: {\n    reply,\n    newStateJson: exit ? null : JSON.stringify(newState),\n    exit,\n    newConfigJson: newConfig ? JSON.stringify(newConfig) : null\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4680,
+        -850
+      ],
+      "id": "admin-processar",
+      "name": "Processar Admin"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "admin-config-mudou",
+              "leftValue": "={{ $json.newConfigJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -4540,
+        -850
+      ],
+      "id": "admin-config-mudou-if",
+      "name": "Config Mudou?"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "clinica_salao:config",
+        "value": "={{ $json.newConfigJson }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -4400,
+        -900
+      ],
+      "id": "admin-salvar-config",
+      "name": "Salvar Config",
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "admin-sair-check",
+              "leftValue": "={{ $json.exit }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -4260,
+        -850
+      ],
+      "id": "admin-sair-if",
+      "name": "Sair do Admin?"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "=admin:{{ $('Dados').item.json.remoteJid }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -4120,
+        -900
+      ],
+      "id": "admin-limpar-estado",
+      "name": "Limpar Estado Admin",
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=admin:{{ $('Dados').item.json.remoteJid }}",
+        "value": "={{ $json.newStateJson }}",
+        "expire": true,
+        "ttl": 600
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -4120,
+        -800
+      ],
+      "id": "admin-salvar-estado",
+      "name": "Salvar Estado Admin",
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agenteclaudebasico.uazapi.com/send/text",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": {{ JSON.stringify($('Dados').item.json.remoteJid) }},\n  \"text\": {{ JSON.stringify($('Processar Admin').item.json.reply) }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -3980,
+        -850
+      ],
+      "id": "admin-enviar-resposta",
+      "name": "Enviar Resposta Admin",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GZvEWbFQ9oVhcSTD",
+          "name": "Uazapi Token (clinica_salao)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "configRaw",
+        "key": "clinica_salao:config",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -3390,
+        -560
+      ],
+      "id": "cfg-buscar",
+      "name": "Buscar Config Cliente",
+      "credentials": {
+        "redis": {
+          "id": "eJpqKfAFKbNodK9N",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "\nlet config = null;\ntry { config = JSON.parse($json.configRaw || 'null'); } catch (e) { config = null; }\nif (!config || !config.servicos) {\n  config = { servicos: [], horario: { dias: \"Segunda a sábado\", abertura: \"09:00\", fechamento: \"19:00\" } };\n}\n\nconst servicosTexto = config.servicos\n  .map(s => `| ${s.nome} | R$ ${Number(s.valor).toFixed(2).replace('.', ',')} | ${s.duracao} min |`)\n  .join('\\n');\n\nconst horarioTexto = `${config.horario.dias}: ${config.horario.abertura} às ${config.horario.fechamento}.`;\n\nreturn { json: { ...$json, message: $('Mensagem Final').item.json.message, servicosTexto, horarioTexto } };\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3390,
+        -480
+      ],
+      "id": "cfg-formatar",
+      "name": "Formatar Config"
     }
   ],
   "pinData": {},
@@ -740,7 +1240,7 @@
       "main": [
         [
           {
-            "node": "Switch",
+            "node": "Filtrar Auto-Resposta",
             "type": "main",
             "index": 0
           }
@@ -991,7 +1491,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "Buscar Config Cliente",
             "type": "main",
             "index": 0
           }
@@ -1020,12 +1520,217 @@
         ]
       ]
     },
+    "Buscar Agendamento": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agendamentos",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Horarios Disponi veis": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agendamentos",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Excluir Marcacao": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agendamentos",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "MCP Agendamentos1": {
       "ai_tool": [
         [
           {
             "node": "AI Agent",
             "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Auto-Resposta": {
+      "main": [
+        [
+          {
+            "node": "É Dono?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "É Dono?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Estado Admin",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Estado Admin": {
+      "main": [
+        [
+          {
+            "node": "Deve Entrar Admin?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deve Entrar Admin?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Config Admin",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Config Admin": {
+      "main": [
+        [
+          {
+            "node": "Processar Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Admin": {
+      "main": [
+        [
+          {
+            "node": "Config Mudou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config Mudou?": {
+      "main": [
+        [
+          {
+            "node": "Salvar Config",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sair do Admin?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Config": {
+      "main": [
+        [
+          {
+            "node": "Sair do Admin?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sair do Admin?": {
+      "main": [
+        [
+          {
+            "node": "Limpar Estado Admin",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Salvar Estado Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpar Estado Admin": {
+      "main": [
+        [
+          {
+            "node": "Enviar Resposta Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Estado Admin": {
+      "main": [
+        [
+          {
+            "node": "Enviar Resposta Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Config Cliente": {
+      "main": [
+        [
+          {
+            "node": "Formatar Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Config": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
             "index": 0
           }
         ]
@@ -1038,12 +1743,8 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "c1d77551-2158-47c3-876d-d8c53cc3e3ea",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "0c56ca9cabc96cba4aeee1f1b897e71aa841bd08e99d1b6e17d8e7ac792787ee"
-  },
-  "nodeGroups": [],
+  "versionId": "e159c722-8c5b-4426-96af-95c0579574fa",
+  "meta": {},
   "id": "VjwfzAzx3pic8PEj",
   "tags": []
 }
